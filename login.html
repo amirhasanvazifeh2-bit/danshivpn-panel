@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DANSHI PANEL - ورود</title><link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="center">
+<div class="card login">
+<h1>⚡ DANSHI PANEL</h1>
+<p>ورود به پنل مدیریت</p>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<form method="post" action="/login">
+<input name="username" placeholder="نام کاربری" required>
+<input name="password" type="password" placeholder="رمز عبور" required>
+<button>ورود</button>
+</form>
+</div>
+</body></html>

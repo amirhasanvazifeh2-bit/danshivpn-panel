@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DANSHI PANEL</title><link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header><div><b>⚡ DANSHI PANEL</b><span>مدیریت VLESS</span></div><a href="/logout">خروج</a></header>
+<main>
+<section class="card">
+<h2>ساخت کانفیگ جدید</h2>
+<form class="grid" method="post" action="/configs">
+<input name="name" placeholder="نام، مثال: danshi 🇺🇸 01" required>
+<input name="country" placeholder="کشور، مثال: USA" required>
+<input name="server" placeholder="IP یا دامنه سرور" required>
+<input name="port" type="number" value="443" placeholder="Port">
+<input name="host" placeholder="Host / Domain">
+<input name="path" value="/ws" placeholder="WebSocket Path">
+<input name="sni" placeholder="SNI (اختیاری)">
+<input name="volume_gb" type="number" value="10" placeholder="حجم GB">
+<input name="days" type="number" value="30" placeholder="مدت روز">
+<input name="users" type="number" value="1" placeholder="تعداد کاربر">
+<button class="full">ساخت کانفیگ</button>
+</form>
+</section>
+
+<section class="card">
+<div class="title-row"><h2>کانفیگ‌ها</h2><span>{{ configs|length }} مورد</span></div>
+{% for c in configs %}
+<div class="config">
+<div>
+<strong>{{ c['name'] }}</strong>
+<div class="muted">{{ c['country'] }} · {{ c['volume_gb'] }}GB · {{ c['days'] }} روز · {{ c['users'] }} کاربر</div>
+<code id="link-{{c['id']}}">برای مشاهده لینک روی «کپی» بزنید</code>
+</div>
+<div class="actions">
+<button onclick="copyLink({{c['id']}})">کپی لینک</button>
+<form method="post" action="/configs/{{c['id']}}/delete" onsubmit="return confirm('حذف شود؟')"><button class="danger">حذف</button></form>
+</div>
+</div>
+{% else %}<p class="muted">هنوز کانفیگی ساخته نشده است.</p>{% endfor %}
+</section>
+</main>
+<script>
+async function copyLink(id){
+ const r=await fetch('/configs/'+id+'/link'); const t=await r.text();
+ await navigator.clipboard.writeText(t);
+ document.getElementById('link-'+id).textContent=t;
+ alert('لینک کپی شد');
+}
+</script>
+</body></html>
